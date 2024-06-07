@@ -1,0 +1,26 @@
+main {
+    min-height: 80vh;
+}
+
+.product-title {
+    transition: 0.5s;
+}
+
+.product-title:hover {
+    font-weight: bold;
+}
+
+
+.rating span,  .rating a{
+    margin: 0.1rem;
+}
+
+.rating a {
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.rating a:hover {
+    /* text-decoration: underline; */
+    font-weight: bold;
+}
