@@ -2,12 +2,21 @@ from django.shortcuts import render
 
 from django.http import JsonResponse
 
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+from drf_spectacular.utils import extend_schema
 
 from .products import products
 
 
-def get_routes_view(request):
 
+@extend_schema(tags=['routers'], request=None, responses=None)
+@api_view(["GET"])
+def get_routes_view(request):
+    """get all routers in the project"""
     routes = [
         "api/products/",
         "api/products/create/",
@@ -19,11 +28,28 @@ def get_routes_view(request):
         "api/products/update/<id>/",
     ]
 
-    return JsonResponse(routes, safe=False)
+    return Response(routes, status=status.HTTP_200_OK)
 
 
+@api_view(["GET"])
 def get_products_view(request):
-    return JsonResponse(products, safe=False)
+    return Response(products, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_one_product_view(request, id):
+    
+    # product = products[int(id)]
+    product = None
+    for p in products:
+        if p['_id'] == id:
+            product = p
+            break
+        
+    if not product:
+        return Response({"message": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(product, status=status.HTTP_200_OK)
+
 
 
 def create_new_product_view(request):
