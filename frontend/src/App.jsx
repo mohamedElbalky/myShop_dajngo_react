@@ -13,7 +13,6 @@ import ProductScreen from "./screens/ProductScreen";
 
 function App() {
   return (
-    // < Routers>
     <Router >
         <Header />
         <main className="py-3">
@@ -27,7 +26,6 @@ function App() {
         </main>
         <Footer />
     </Router>
-    // </Routers>
   );
 }
 
