@@ -4,63 +4,75 @@ import { Link, useParams } from "react-router-dom";
 
 import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
 
-import axios from "axios";
+// import axios from "axios";
 
 import Rating from "../components/Rating";
+
+import { useSelector, useDispatch } from "react-redux"
+import { getProductDetails } from "../store/productSlice";
 
 // import products from "../products";
 
 export default function ProductScreen() {
   let params = useParams();
+  // // console.log(params);
+  // // const product = products.find((p) => p._id === params.id);
 
-  // const product = products.find((p) => p._id === params.id);
+  // const [product, setProduct] = useState({});
 
-  const [product, setProduct] = useState({});
+  // useEffect(() => {
+
+  //   async function fetchProduct() {
+  //     const { data } = await axios.get(`/api/products/${params.uuid}`)
+  //     setProduct(data);
+  //   }
+  //   fetchProduct();
+
+  // }, [params.uuid])
+
+
+  const dispatch = useDispatch()
+  const { productDetails } = useSelector((state) => state.products);
 
   useEffect(() => {
+    dispatch(getProductDetails(params.uuid));
+  }, [dispatch, params.uuid]);
 
-    async function fetchProduct() {
-      const { data } = await axios.get(`/api/products/${params.id}`)
-      setProduct(data);
-    }
-    fetchProduct();
-
-  }, [params.id])
-
+  
   return (
     <div>
       <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>
       <Row>
-        <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid />
+        <Col lg={6} className="d-flex justify-content-center align-items-center">
+          <Image src={productDetails.image} alt={productDetails.name} fluid />
         </Col>
-        <Col md={3}>
+        <Col lg={3} className="mt-2">
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h3>{product.name}</h3>
+              <h3>{productDetails.name}</h3>
             </ListGroup.Item>
             <ListGroup.Item>
               <Rating
-                value={product.rating}
-                text={`${product.numReviews} reviews`}
+                value={productDetails.rating}
+                text={`${productDetails.numReviews} reviews`}
                 color={"#f8e825"}
               />
             </ListGroup.Item>
 
-            <ListGroup.Item>Description: {product.description}</ListGroup.Item>
+            <ListGroup.Item>Description: {productDetails.description}</ListGroup.Item>
           </ListGroup>
         </Col>
 
-        <Col md={3}>
+        <Col lg={3}>
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${product.price}</strong>
+                    <strong>${productDetails.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -68,13 +80,13 @@ export default function ProductScreen() {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                    {productDetails.countInStock > 0 ? "In Stock" : "Out of Stock"}
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item className="text-center">
                 <Button
-                  disabled={product.countInStock === 0}
+                  disabled={productDetails.countInStock === 0}
                   className="btn-block"
                   type="button"
                 >
@@ -89,7 +101,7 @@ export default function ProductScreen() {
 
 
       {/* TODO: add review section */}
-      <Row>
+      <Row className="mt-2 text-danger">
         REVIEW
       </Row>
 

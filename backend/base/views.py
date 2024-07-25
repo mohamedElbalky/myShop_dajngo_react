@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from django.http import JsonResponse
 
@@ -10,6 +10,9 @@ from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 
 from .products import products
+
+from .models import Product
+from .serializers import ProductSerializer
 
 
 
@@ -33,22 +36,21 @@ def get_routes_view(request):
 
 @api_view(["GET"])
 def get_products_view(request):
-    return Response(products, status=status.HTTP_200_OK)
+    
+    products = Product.objects.order_by('-createdAt')
+    serializer = ProductSerializer(products, many=True)
+    
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@extend_schema(request=None, responses=None)
 @api_view(["GET"])
-def get_one_product_view(request, id):
+def get_one_product_view(request, uuid=None):
     
-    # product = products[int(id)]
-    product = None
-    for p in products:
-        if p['_id'] == id:
-            product = p
-            break
-        
-    if not product:
-        return Response({"message": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+    product = get_object_or_404(Product, uuid=uuid)
+
+    serializer = ProductSerializer(product, many=False)
     
-    return Response(product, status=status.HTTP_200_OK)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

@@ -8,11 +8,11 @@ import Rating from './Rating';
 export default function Product({ product }) {
   return (
     <Card style={{ width: '18rem' }} className='p-3'>
-      <Link to={`/product/${product._id}`} style={{ textDecoration: "none" }}>
+      <Link to={`/products/${product.uuid}`} style={{ textDecoration: "none" }}>
         <Card.Img variant="top" src={product.image} />
       </Link>
       <Card.Body>
-        <Link to={`/product/${product._id}`} style={{ textDecoration: "none" }}>
+        <Link to={`/products/${product.uuid}`} style={{ textDecoration: "none" }}>
           <Card.Title as="div">
             <strong className='product-title'>{product.name}</strong>
           </Card.Title>

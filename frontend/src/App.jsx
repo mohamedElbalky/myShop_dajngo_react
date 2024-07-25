@@ -1,10 +1,8 @@
 
 import { Container } from "react-bootstrap";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Switch } from "react-router-dom";
 
-
-import "./App.css";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -18,9 +16,10 @@ function App() {
         <main className="py-3">
           <Container>
             <Routes>
-              <Route path="/" element={<HomeScreen />} exact />
-              <Route path="/product/:id" element={<ProductScreen />} />
 
+              <Route path="/" element={<HomeScreen />} exact />
+              <Route path="/products/:uuid" element={<ProductScreen />} />
+              
             </Routes>
           </Container>
         </main>

@@ -12,10 +12,10 @@ export default function Header({
   toLogin = "/login",
 }) {
   return (
-    <header>
+    <header className="header">
       <Navbar expand="lg" bg="dark" variant="dark" collapseOnSelect>
         <Container fluid>
-          <Link to="/">
+          <Link to="/" className="text-decoration-none">
             <Navbar.Brand>My Shop</Navbar.Brand>
           </Link>
           {/* <LinkContainer to={toRoot}>
