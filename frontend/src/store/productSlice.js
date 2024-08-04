@@ -4,12 +4,12 @@ import axios from "axios";
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (_, thuckAPI) => {
-    const { rejectWithValue, dispatch } = thuckAPI;
+    const { rejectWithValue } = thuckAPI;
     try {
       const response = await axios.get("/api/products/");
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err.message);
+    } catch (error) {
+      return rejectWithValue(error.message || 'An error occurred');
     }
   }
 );
@@ -30,6 +30,8 @@ export const getProductDetails = createAsyncThunk(
 );
 
 const initialState = {
+  error: null,
+  loading: false,
   products: [],
   productDetails: {},
   // error: null,
@@ -46,27 +48,36 @@ const productSlice = createSlice({
     builder
       // getProducts
       .addCase(getProducts.pending, (state, action) => {
+        state.loading = true;
         // TODO: add spinner
       })
       .addCase(getProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
         // TODO: add error alert
-
-        console.log(action.error.message);
+        state.loading = false;
+        state.error = action.payload || 'An unexpected error occurred';
+        // console.log(action.payload);
       })
 
       // getOneProduct
       .addCase(getProductDetails.pending, (state, action) => {
+        state.loading = true;
         // TODO: add spinner
       })
       .addCase(getProductDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
         state.productDetails = action.payload;
       })
       .addCase(getProductDetails.rejected, (state, action) => {
         // TODO: add error alert
-        console.log(action.error.message);
+        state.loading = false;
+        state.error = action.payload || 'An unexpected error occurred';
+        console.log(action.payload);
       })
   },
 });

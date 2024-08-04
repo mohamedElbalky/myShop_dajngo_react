@@ -9,6 +9,9 @@ import Product from "../components/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../store/productSlice";
 
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+
 export default function HomeScreen() {
   // const [products, setProducts] = useState([]);
   // useEffect(() => {
@@ -21,16 +24,25 @@ export default function HomeScreen() {
 
   const dispatch = useDispatch();
 
-  const { products } = useSelector((state) => state.products);
+  const { products, loading, error } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
   return (
-    <div>
-      <h1 className="main_title">Latest Products</h1>
+    <div >
+      { products && <h1 className="main_title">Latest Products</h1>}
+      
       <Row className="my-3 gy-4 justify-content-center">
-        {products.length > 0 ? (
+        {loading ? (
+          <Col>
+            < Loader />
+          </Col>
+        ) : error ? (
+          <Col>
+            <Message type="danger" >{ error }</ Message>
+          </Col>
+        ) : products.length > 0 ? (
           products.map((product) => (
             <Col
               key={product.uuid}

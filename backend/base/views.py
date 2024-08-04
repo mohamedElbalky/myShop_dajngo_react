@@ -34,6 +34,7 @@ def get_routes_view(request):
     return Response(routes, status=status.HTTP_200_OK)
 
 
+@extend_schema(request=None, responses=None)
 @api_view(["GET"])
 def get_products_view(request):
     
