@@ -46,6 +46,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_reviews_count(self):
+        return self.reviews.count()
 
 
 class Review(models.Model):
@@ -68,7 +71,7 @@ class Review(models.Model):
     updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"name: {self.name}\nproduct: {self.product.name}\nrating: {self.rating}"
+        return f"name: {self.user.username}\nproduct: {self.product.name}\nrating: {self.rating}"
 
 
 class Order(models.Model):
@@ -83,6 +86,7 @@ class Order(models.Model):
     shippingPrice = models.DecimalField(
         max_digits=15, decimal_places=2, null=True, blank=True
     )
+    # total price in order = (orders prices + shipping price + tax price)
     totalPrice = models.DecimalField(
         max_digits=20, decimal_places=2, null=True, blank=True
     )
@@ -90,6 +94,7 @@ class Order(models.Model):
     paidAt = models.DateTimeField(null=True, blank=True)
     isDelivered = models.BooleanField(default=False)
     deliveredAt = models.DateTimeField(null=True, blank=True)
+    
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
@@ -107,6 +112,8 @@ class OrderItem(models.Model):
     )
     # productName = models.CharField(max_length=255)
     qty = models.IntegerField(default=0)
+    
+    # order item price = product.price * qty
     price = models.DecimalField(max_digits=10, decimal_places=2)
     # image = models.ImageField(upload_to=handle_image_upload)
 

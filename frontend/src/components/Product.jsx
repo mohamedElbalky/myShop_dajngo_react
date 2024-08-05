@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
 export default function Product({ product }) {
+  // display in HomeScreen
   return (
     <Card style={{ width: '18rem' }} className='p-3'>
       <Link to={`/products/${product.uuid}`} style={{ textDecoration: "none" }}>

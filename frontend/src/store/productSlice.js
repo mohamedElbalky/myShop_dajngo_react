@@ -34,8 +34,7 @@ const initialState = {
   loading: false,
   products: [],
   productDetails: {},
-  // error: null,
-  // loading: false,
+
   // totalCount: 0,
   // currentPage: 1,
 };
@@ -49,7 +48,6 @@ const productSlice = createSlice({
       // getProducts
       .addCase(getProducts.pending, (state, action) => {
         state.loading = true;
-        // TODO: add spinner
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.loading = false;
@@ -57,7 +55,6 @@ const productSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
-        // TODO: add error alert
         state.loading = false;
         state.error = action.payload || 'An unexpected error occurred';
         // console.log(action.payload);
@@ -66,7 +63,6 @@ const productSlice = createSlice({
       // getOneProduct
       .addCase(getProductDetails.pending, (state, action) => {
         state.loading = true;
-        // TODO: add spinner
       })
       .addCase(getProductDetails.fulfilled, (state, action) => {
         state.loading = false;
@@ -74,7 +70,6 @@ const productSlice = createSlice({
         state.productDetails = action.payload;
       })
       .addCase(getProductDetails.rejected, (state, action) => {
-        // TODO: add error alert
         state.loading = false;
         state.error = action.payload || 'An unexpected error occurred';
         console.log(action.payload);

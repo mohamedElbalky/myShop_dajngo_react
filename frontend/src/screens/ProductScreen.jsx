@@ -1,14 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Button,
+  Card,
+  Form,
+} from "react-bootstrap";
 
+import { useSelector, useDispatch } from "react-redux";
 // import axios from "axios";
 
 import Rating from "../components/Rating";
 
-import { useSelector, useDispatch } from "react-redux";
 import { getProductDetails } from "../store/productSlice";
 
 import Loader from "../components/Loader";
@@ -17,38 +25,34 @@ import Message from "../components/Message";
 // import products from "../products";
 
 export default function ProductScreen() {
-  let params = useParams();
-  // // console.log(params);
-  // // const product = products.find((p) => p._id === params.id);
+  const params = useParams();
+  const navigate = useNavigate();
 
-  // const [product, setProduct] = useState({});
-
-  // useEffect(() => {
-
-  //   async function fetchProduct() {
-  //     const { data } = await axios.get(`/api/products/${params.uuid}`)
-  //     setProduct(data);
-  //   }
-  //   fetchProduct();
-
-  // }, [params.uuid])
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
   const { productDetails, loading, error } = useSelector(
     (state) => state.products
   );
 
+  // console.log([...Array(5).keys()]) // --> [0, 1, 2, 3, 4, 5]
+
   useEffect(() => {
     dispatch(getProductDetails(params.uuid));
   }, [dispatch, params.uuid]);
+
+  const addToCardHandler = () => {
+    // TODO: handle add product to the card and redirect a user to sopping card
+    navigate(`/cart/${params.uuid}?qty=${qty}`);
+  };
 
   return (
     <div>
       {loading ? (
         <Loader />
       ) : error ? (
-        <div className="mt-3">  
-          <Message type="danger" >{error}</ Message>
+        <div className="mt-3">
+          <Message type="danger">{error}</Message>
         </div>
       ) : (
         <>
@@ -106,11 +110,35 @@ export default function ProductScreen() {
                       </Col>
                     </Row>
                   </ListGroup.Item>
+                  {productDetails.countInStock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Qty:</Col>
+                        <Col>
+                          <Form.Select
+                            size="sm"
+                            className="mr-auto w-75"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
+                            {[...Array(productDetails.countInStock).keys()].map(
+                              (x) => (
+                                <option key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Select>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
                   <ListGroup.Item className="text-center">
                     <Button
                       disabled={productDetails.countInStock === 0}
                       className="btn btn-dark"
                       type="button"
+                      onClick={addToCardHandler}
                     >
                       Add to cart
                     </Button>

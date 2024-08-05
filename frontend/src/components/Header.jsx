@@ -15,7 +15,7 @@ export default function Header({
     <header className="header">
       <Navbar expand="lg" bg="dark" variant="dark" collapseOnSelect>
         <Container fluid>
-          <Link to="/" className="text-decoration-none">
+          <Link to={toRoot} className="text-decoration-none">
             <Navbar.Brand>My Shop</Navbar.Brand>
           </Link>
           {/* <LinkContainer to={toRoot}>

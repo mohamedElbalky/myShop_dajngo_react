@@ -31,7 +31,7 @@ export default function HomeScreen() {
   }, [dispatch]);
   return (
     <div >
-      { products && <h1 className="main_title">Latest Products</h1>}
+      { products && <h1>Latest Products</h1>}
       
       <Row className="my-3 gy-4 justify-content-center">
         {loading ? (
