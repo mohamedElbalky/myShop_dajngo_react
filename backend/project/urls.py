@@ -21,6 +21,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+from rest_framework_simplejwt.views import TokenVerifyView
+
+from base.custom_jwt import MyTokenObtainPairView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -28,6 +36,16 @@ urlpatterns = [
     
     # dajngo restframework
     path('api-auth/', include('rest_framework.urls')),
+    
+    # users 
+    path('api/users/', include('x_users.urls')),
+    
+    
+    # JWT authentication
+    path('api/users/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),  # api/token/
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
 ]
 
 if settings.DEBUG:

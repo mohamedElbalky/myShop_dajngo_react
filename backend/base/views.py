@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 
@@ -33,9 +34,9 @@ def get_routes_view(request):
 
     return Response(routes, status=status.HTTP_200_OK)
 
-
 @extend_schema(request=None, responses=None)
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_products_view(request):
     
     products = Product.objects.order_by('-createdAt')
@@ -45,6 +46,7 @@ def get_products_view(request):
 
 @extend_schema(request=None, responses=None)
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_one_product_view(request, uuid=None):
     
     product = get_object_or_404(Product, uuid=uuid)
@@ -55,21 +57,21 @@ def get_one_product_view(request, uuid=None):
 
 
 
-def create_new_product_view(request):
+# def create_new_product_view(request):
 
-    new_product = {
-        "_id": "7",
-        "name": "new product",
-        "image": "/images/airpods.jpg",
-        "description": "Gravida dictumst sed enim ornare faucibus dolor mi egestas enim.",
-        "brand": "Apple",
-        "category": "Electronics",
-        "price": 89.99,
-        "countInStock": 7,
-        "rating": 4,
-        "numReviews": 2,
-    }
+#     new_product = {
+#         "_id": "7",
+#         "name": "new product",
+#         "image": "/images/airpods.jpg",
+#         "description": "Gravida dictumst sed enim ornare faucibus dolor mi egestas enim.",
+#         "brand": "Apple",
+#         "category": "Electronics",
+#         "price": 89.99,
+#         "countInStock": 7,
+#         "rating": 4,
+#         "numReviews": 2,
+#     }
     
-    products.append(new_product)
+#     products.append(new_product)
     
-    return JsonResponse(products, safe=False)
+#     return JsonResponse(products, safe=False)

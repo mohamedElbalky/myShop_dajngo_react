@@ -3,7 +3,10 @@
 
 django
 djangorestframework
-django-cors-headers
+django-cors-headers   # handle CORS headers to connent wiht react
 pillow
-django-cleanup
-python-decouple
+django-cleanup   # clean images after delete instance
+python-decouple  # .env variables handle
+djangorestframework-simplejwt
+django-unfold    # admin theme
+django-import-export  # import and export data
